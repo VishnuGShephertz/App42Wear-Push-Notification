@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.app42.wear.notification.MainActivity" >
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:text="App42 Message" />
+    
+ <Button
+        android:id="@+id/registerPush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/message"
+        android:layout_marginTop="5dp"
+        android:onClick="registerForPush"
+        android:text="Register" />
+    <Button
+        android:id="@+id/basicPush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/registerPush"
+        android:layout_marginTop="5dp"
+        android:onClick="sendBasicPush"
+        android:text="Send Basic Push" />
+    
+      <Button
+        android:id="@+id/imagePush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/basicPush"
+        android:layout_marginTop="5dp"
+        android:onClick="sendImagePush"
+        android:text="Send Imge Push" />
+      
+         <Button
+        android:id="@+id/bigTextPush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/imagePush"
+        android:layout_marginTop="5dp"
+        android:onClick="sendBigTextPush"
+        android:text="Send Big Text Push" />
+         
+          <Button
+        android:id="@+id/multiPagePush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/bigTextPush"
+        android:layout_marginTop="5dp"
+        android:onClick="sendMultiPagePush"
+        android:text="Send Multi Page Push" />
+
+
+</RelativeLayout>
