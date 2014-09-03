@@ -219,7 +219,7 @@ __4.__ Multiple Page based PushNotification
   ```
 __Building Notification UI for Android Wear and device__ After prasing the message in above step we have to build Notification UI accordingly the type of message sent using App42 API. All sample code for Notification UI generation in written in NotificationBuilder.java file.
  
-__1.__Builiding Common Wearable Notification UI
+__1.__ Builiding Common Wearable Notification UI
   
  ```
   private static WearableNotifications.Builder getWearableNotification(
