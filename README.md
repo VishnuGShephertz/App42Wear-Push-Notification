@@ -26,26 +26,33 @@ Here are the few easy steps to run this sample app.
 A. Import this project in Eclipse.
 B. Check Android Dependencies and Android Private libraries in order and import section on Build Path.
 ```
-6. Configure with Android Studio.
+
+7. Configure with Android Studio.
 ```
 A. Import this project in your Android Studio.
 B. Add library jar files from libs folder by adding library modules in Android Studio.
 ```
-6. Import this project in your Android Studio.
+
+8. Make these changes in MainActivity.java file of sample.
 
 ```
 A. Replace api-Key and secret-Key that you have received in step 2 or 3 at line number 39 and 40.
 B. Replace your user-id by which you want to register your application for PushNotification at line number 31.
 ```
 __GCM Integration__
-6. Create a project and get your Project Number from [google developer console](https://cloud.google.com/console/project). It would be available in Overview section of your created project.<div style="clear:both"></div>
-7. Select your created project and click on APIs option in Google developer console and enable Google Cloud Messaging for Android service.<div style="clear:both"></div>
-8. Click on Credentials(in APIs option) from left menu -> Create New Key -> Server Key.<div style="clear:both"></div>
-9. Keep Accept requests from these server IP addresses as blank and click on Create button.<div style="clear:both"></div>
-10. Go to [AppHQ] (http://apphq.shephertz.com) click on Push Notification and select Android Settings in Settings option.<div style="clear:both"></div>
-11. Select your app and provider as GCM and copy server key that is generated in Google developer console in above step and submit it.<div style="clear:both"></div>
-12. Open CommonUtilities.java file of sample project and make following changes.
+
+9. Create a project and get your Project Number from [google developer console](https://cloud.google.com/console/project). It would be available in Overview section of your created project.<div style="clear:both"></div>
+10. Select your created project and click on APIs option in Google developer console and enable Google Cloud Messaging for Android service.<div style="clear:both"></div>
+11. Click on Credentials(in APIs option) from left menu -> Create New Key -> Server Key.<div style="clear:both"></div>
+12. Keep Accept requests from these server IP addresses as blank and click on Create button.<div style="clear:both"></div>
+13. Go to [AppHQ] (http://apphq.shephertz.com) click on Push Notification and select Android Settings in Settings option.<div style="clear:both"></div>
+14. Select your app and provider as GCM and copy server key that is generated in Google developer console in above step and submit it.<div style="clear:both"></div>
+15. Open CommonUtilities.java file of sample project and make following changes.
 
 ```
 A. Replace your GcmProjectNo by your Google Project No at line no90 
 ```
+16. Build your Android Android application and run it on your device (device version should must be 4.4 or above to support Android Wear Notification and for Android Wear Connection).
+17. For Android Wear Connectivty with device as well as for [Android Wear Getting Started] (http://blogs.shephertz.com/2014/07/24/android-wear-getting-started/) read this blog.
+
+
