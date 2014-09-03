@@ -1,10 +1,17 @@
 package com.app42.wear.notification;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.app42.wear.notification.App42Push.PageNotification;
 
@@ -21,7 +28,7 @@ public class Utils {
 
 	private static final String DefMessage = "Hey I am using App42 PushNotification in my Android as well as in Android Wear.";
 	private static final String DefTitle = "App42 PushNotification";
-	private static final String DefImage = "background.png";
+	private static final String DefImage = "shephertz.png";
 
 	private static final String BigTextContent = "storeDeviceToken  \n sendPushMessageToUser \n sendPushMessageToAll \n createChannelForApp \n subscribeToChannel \n sendPushMessageToChannel";
 
@@ -131,8 +138,9 @@ public class Utils {
 		if (pushCode == PushCode.BigText) {
 			app42Push.setBigText(pushJson.optString(Title, BigTextContent));
 		} else if (pushCode == PushCode.Image) {
-			app42Push.setImage(pushJson.optString(Title, DefImage));
+			app42Push.setImage(pushJson.optString(Image, DefImage));
 		} else if (pushCode == PushCode.MultiPage) {
+			app42Push.setImage(pushJson.optString(Image, DefImage));
 			JSONArray pageArray = pushJson.getJSONArray(Pages);
 			ArrayList<App42Push.PageNotification> pushPages = new ArrayList<PageNotification>();
 			int length = pageArray.length();
@@ -144,6 +152,7 @@ public class Utils {
 						jsonPage.optString(PageContent, BigTextContent));
 				pushPages.add(page);
 			}
+			app42Push.setPageNotifications(pushPages);
 		}
 		return app42Push;
 	}
@@ -152,7 +161,8 @@ public class Utils {
 		App42Push app42Push = null;
 		try {
 			JSONObject pushJson = new JSONObject(message);
-			app42Push=getEventNotification(pushJson, PushCode.getByCode(pushJson.optInt(NotifyCode, 0)));
+			app42Push = getEventNotification(pushJson,
+					PushCode.getByCode(pushJson.optInt(NotifyCode, 0)));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -160,5 +170,27 @@ public class Utils {
 					PushCode.Basic);
 		}
 		return app42Push;
+	}
+
+	public static Bitmap loadBitmapAsset(Context context, String asset) {
+		InputStream is = null;
+		Bitmap bitmap = null;
+		try {
+			is = context.getAssets().open(asset);
+			if (is != null) {
+				bitmap = BitmapFactory.decodeStream(is);
+			}
+		} catch (IOException e) {
+			Log.e("App42", e.toString());
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					Log.e("App42", "Cannot close InputStream: ", e);
+				}
+			}
+		}
+		return bitmap;
 	}
 }

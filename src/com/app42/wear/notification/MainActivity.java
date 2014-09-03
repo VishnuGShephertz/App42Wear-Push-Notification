@@ -46,7 +46,8 @@ public class MainActivity extends Activity {
 
 	public void sendMultiPagePush(View view) {
 		try {
-			sendPushMessage(Utils.buildMultiPageJson(), "vishnu");
+			messageText.setText("Sending Multi page Push.....");
+			sendPushMessage(Utils.buildMultiPageJson(), "vishnu12");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,7 +61,8 @@ public class MainActivity extends Activity {
 
 	public void sendBigTextPush(View view) {
 		try {
-			sendPushMessage(Utils.buildBigTextJson(), "vishnu");
+			messageText.setText("Sending Big Push.....");
+			sendPushMessage(Utils.buildBigTextJson(), "vishnu12");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,8 +75,8 @@ public class MainActivity extends Activity {
 	}
 
 	public void sendImagePush(View view) {
-		try {
-			sendPushMessage(Utils.buildImageJson(), "vishnu");
+		try {messageText.setText("Sending Image Push.....");
+			sendPushMessage(Utils.buildImageJson(), "vishnu12");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,7 +90,8 @@ public class MainActivity extends Activity {
 
 	public void sendBasicPush(View view) {
 		try {
-			sendPushMessage(Utils.buildBasicJson(), "vishnu");
+			messageText.setText("Sending basic Push.....");
+			sendPushMessage(Utils.buildBasicJson(), "vishnu12");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,7 +104,8 @@ public class MainActivity extends Activity {
 	}
 
 	public void registerForPush(View view) {
-		App42API.setLoggedInUser("vishnu");
+		messageText.setText("Registering for Push.....");
+		App42API.setLoggedInUser("vishnu12");
 		registerWithApp42("1043599038916");
 	}
 
