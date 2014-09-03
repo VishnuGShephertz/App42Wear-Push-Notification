@@ -1,8 +1,8 @@
 App42Wear-Push-Notification
 ===========================
 
-This sample project explain how can we App42 PushNotification API in different ways to send Push Notification to device as well as sink them with Android Wearables.
-Please go through with [Android Wear Getting Started] (http://blogs.shephertz.com/2014/07/24/android-wear-getting-started/)if you are new to Android Wear.
+This sample project explain how can we [App42 PushNotification API](http://api.shephertz.com/app42-docs/push-notification-service/) in different ways to send Push Notification to device as well as sink them with Android Wearables.
+Please go through with [Android Wear Getting Started] (http://blogs.shephertz.com/2014/07/24/android-wear-getting-started/) if you are new to Android Wear.
 
 Here you can learn how to configure different type of PushNotification using App42 PushNotification API on device as well as on Android Wearable.</br>
 
@@ -54,5 +54,317 @@ A. Replace your GcmProjectNo by your Google Project No at line no90
 ```
 16. Build your Android Android application and run it on your device (device version should must be 4.4 or above to support Android Wear Notification and for Android Wear Connection).
 17. For Android Wear Connectivty with device as well as for [Android Wear Getting Started] (http://blogs.shephertz.com/2014/07/24/android-wear-getting-started/) read this blog.
+18. You can also open these Notifications from Android Wear to phone when you click *Open on Phone* option on Android Wear.
 
+# Design Details:
 
+__Registration for PushNotification__ To register for Push Notification on App42 , you have to use method written in App42GCMService.java file, that register your GCM registration Id on App42.
+ 
+```
+	private void registerWithApp42(String regId) {
+		App42Log.debug(" Registering on Server ....");
+		App42API.buildPushNotificationService().storeDeviceToken(
+				App42API.getLoggedInUser(), regId, new App42CallBack() {
+					@Override
+					public void onSuccess(Object paramObject) {
+						// TODO Auto-generated method stub
+						App42Log.debug(" ..... Registeration Success ....");
+						GCMRegistrar.setRegisteredOnServer(App42API.appContext,
+								true);
+					}
+					@Override
+					public void onException(Exception paramException) {
+						App42Log.debug(" ..... Registeration Failed ....");
+						App42Log.debug("storeDeviceToken :  Exception : on start up "
+								+ paramException);
+					}
+				});
+	}
+```
+
+__Send Push Notification to User__ You can also send different type of Push Notification using single API and configure accordingly..
+ 
+```
+	private void sendPushMessage(JSONObject message, String userName) {
+		App42API.buildPushNotificationService().sendPushMessageToUser(userName,
+				message.toString(), new App42CallBack() {
+					@Override
+					public void onSuccess(Object arg0) {
+						// TODO Auto-generated method stub
+						displayMessage(arg0.toString());
+					}
+
+					@Override
+					public void onException(Exception arg0) {
+						// TODO Auto-generated method stub
+						displayMessage(arg0.toString());
+
+					}
+				});
+	}
+```
+__ Congiguring different type of PushNotification before sending to user __ All sample code written in Utils.java file in sample project.
+
+1. Basic Push Notfication
+```
+static JSONObject buildBasicJson() throws JSONException {
+		JSONObject pushJson = new JSONObject();
+		pushJson.put(Title, "App42 PushNotification");
+		pushJson.put(NotifyCode, PushCode.Basic.getCode());
+		pushJson.put(
+				Message,
+				"Hey I am using App42 PushNotification API for Android as well as for Wearable Notification.");
+		return pushJson;
+	}
+
+```
+2. Image based Push Notification (image should reside in assets folder of sample)
+```
+static JSONObject buildImageJson() throws JSONException {
+		JSONObject pushJson = new JSONObject();
+		pushJson.put(Title, "App42 PushNotification");
+		pushJson.put(NotifyCode, PushCode.Image.getCode());
+		pushJson.put(
+				Message,
+				"Hey I am using App42 PushNotification API for Android as well as for Wearable Notification.");
+		pushJson.put(Image, DefImage);
+		return pushJson;
+	}
+```
+3. Multiple Page based PushNotification
+ ```
+	static JSONObject buildMultiPageJson() throws JSONException {
+		JSONObject pushJson = new JSONObject();
+		pushJson.put(Title, "Shephertz Technology");
+		pushJson.put(NotifyCode, PushCode.MultiPage.getCode());
+		pushJson.put(
+				Message,
+				"Shephertz provides complete cloud EcoSystem for App, Game and Web development. ");
+		JSONArray pushPages = new JSONArray();
+		pushPages.put(getApp42Json());
+		pushPages.put(getAppWarpJson());
+		pushPages.put(getApp42PaasJson());
+		pushPages.put(getAppClayJson());
+		pushPages.put(getAppHypeJson());
+		pushJson.put(Pages, pushPages);
+		pushJson.put(Image, DefImage);
+		return pushJson;
+	}
+	//Page Notification like
+	
+	private static JSONObject getApp42Json() throws JSONException {
+		JSONObject app42 = new JSONObject();
+		app42.put(PageTitle, "App42");
+		app42.put(pageSummary,
+				"App42 Complete cloud API for differnet applications.");
+		app42.put(
+				PageContent,
+				"App42 Provides complete cloud API for application development in different SDKs e.g \n PushNotification \n LeaderBoard \n SocialService \n File Storage \n Custom Code");
+		return app42;
+	}
+ ```
+  __ Parsing Push Notification message when receive on Device side__ When the Push Notification message that we sent in above step is received on Android device side we have to parse the notification message accordingly and generate Notfication UI accordingly that is explain in next step.This code is written in Utils.java file of sample project.
+   ```
+   static App42Push getApp42Push(String message) {
+		App42Push app42Push = null;
+		try {
+			JSONObject pushJson = new JSONObject(message);
+			app42Push = getEventNotification(pushJson,
+					PushCode.getByCode(pushJson.optInt(NotifyCode, 0)));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			app42Push = new App42Push(message, "App42 PushNotification",
+					PushCode.Basic);
+		}
+		return app42Push;
+	}
+	private static App42Push getEventNotification(JSONObject pushJson,
+			PushCode pushCode) throws JSONException {
+		App42Push app42Push = new App42Push(pushJson.optString(Message,
+				DefMessage), pushJson.optString(Title, DefTitle), pushCode);
+		if (pushCode == PushCode.BigText) {
+			app42Push.setBigText(pushJson.optString(Title, BigTextContent));
+		} else if (pushCode == PushCode.Image) {
+			app42Push.setImage(pushJson.optString(Image, DefImage));
+		} else if (pushCode == PushCode.MultiPage) {
+			app42Push.setImage(pushJson.optString(Image, DefImage));
+			JSONArray pageArray = pushJson.getJSONArray(Pages);
+			ArrayList<App42Push.PageNotification> pushPages = new ArrayList<PageNotification>();
+			int length = pageArray.length();
+			for (int i = 0; i < length; i++) {
+				JSONObject jsonPage = pageArray.getJSONObject(i);
+				PageNotification page = app42Push.createPageNotification(
+						jsonPage.optString(PageTitle, DefTitle),
+						jsonPage.optString(pageSummary, DefMessage),
+						jsonPage.optString(PageContent, BigTextContent));
+				pushPages.add(page);
+			}
+			app42Push.setPageNotifications(pushPages);
+		}
+		return app42Push;
+	}
+	
+    ```
+ __ Building Notification UI for Android Wear and device__ After prasing the message in above step we have to build Notification UI accordingly the type of message sent using App42 API. All sample code for Notification UI generation in written in NotificationBuilder.java file.
+ 
+ 1. Builiding Common Wearable Notification UI
+  
+ ```
+  private static WearableNotifications.Builder getWearableNotification(
+			Context context, App42Push app42Push) {
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				context).setContentText(app42Push.getMessage())
+				.setContentTitle(app42Push.getTitle())
+				.setSmallIcon(R.drawable.ic_launcher);
+		WearableNotifications.Builder wearableBuilder = new WearableNotifications.Builder(
+				builder);
+		return wearableBuilder;
+	}
+ ```
+  2. Adding Action on Notification Click
+  
+ ```
+ private static NotificationCompat.Action getAction(Context context) {
+		Intent intent = new Intent(context, MainActivity.class);
+		intent.putExtra(App42GCMService.EXTRA_MESSAGE, currentMsg);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		return new NotificationCompat.Action.Builder(R.drawable.ic_result_open,
+				"Open on Phone", pendingIntent).build();
+	}
+ ```
+ 3. Building basic Notification UI
+ 
+ ```
+ private static Notification getBasicNotification(Context context,
+			App42Push app42Push) {
+		WearableNotifications.Builder builder = getWearableNotification(context,
+				app42Push);
+		builder.getCompatBuilder().addAction(getAction(context));
+		return builder.build();
+	}
+ ```
+ 4. Building Image based Notification UI
+ 
+ ```
+ private static Notification buildImageNotification(Context context,
+			App42Push app42Push) {
+		NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
+		Bitmap imageBitmap =null;
+		if (app42Push.getImage() != null) {
+			imageBitmap = Bitmap.createScaledBitmap(
+					Utils.loadBitmapAsset(context, app42Push.getImage()),
+					NOTIFICATION_IMAGE_WIDTH, NOTIFICATION_IMAGE_HEIGHT, false);
+		}
+		style.bigPicture(imageBitmap);
+		style.setBigContentTitle(app42Push.getTitle());
+		style.setSummaryText("");
+		WearableNotifications.Builder builder = getWearableNotification(context,
+				app42Push);
+		builder.getCompatBuilder().addAction(getAction(context));
+		builder.getCompatBuilder().setStyle(style);
+		builder.build();
+		return builder.build();
+	}
+ ```
+ 5. Building Big Text based Notification UI
+ 
+ ```
+ private static Notification buildBigNotification(Context context,
+			App42Push app42Push) {
+		NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
+		style.bigText(app42Push.getbigText());
+		style.setBigContentTitle(app42Push.getTitle());
+		style.setSummaryText("");
+		WearableNotifications.Builder builder = getWearableNotification(context,
+				app42Push);
+		builder.getCompatBuilder().addAction(getAction(context));
+		builder.getCompatBuilder().setStyle(style);
+		builder.getCompatBuilder().setContentText(app42Push.getbigText());
+		return builder.build();
+	}
+
+ ```
+ 6. Building Multiple Page Notification UI
+ 
+ ```
+ private static Notification buildMultiPageNotification(Context context,
+			App42Push app42Push) {
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				context);
+		ArrayList<Notification> notificationPages = buildNotificationPages(
+				app42Push.getPageNotifications(), context);
+		if (app42Push.getImage() != null) {
+			Bitmap imageBitmap = Bitmap.createScaledBitmap(
+					Utils.loadBitmapAsset(context, app42Push.getImage()),
+					NOTIFICATION_IMAGE_WIDTH, NOTIFICATION_IMAGE_HEIGHT, false);
+			builder.setLargeIcon(imageBitmap);
+		}
+		builder.setContentTitle(app42Push.getTitle());
+		builder.setContentText(app42Push.getMessage());
+		builder.setSmallIcon(R.drawable.ic_launcher);
+
+		Notification notification = builder.extend(
+				new NotificationCompat.WearableExtender()
+						.addPages(notificationPages)).build();
+		return notification;
+	}
+	private static ArrayList<Notification> buildNotificationPages(
+			ArrayList<PageNotification> pageNotifications, Context context) {
+		ArrayList<Notification> notificationPages = new ArrayList<Notification>();
+		if (pageNotifications != null) {
+			int size = pageNotifications.size();
+			for (int i = 0; i < size; ++i) {
+				PageNotification pageNotify = pageNotifications.get(i);
+				NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
+				style.bigText(pageNotify.getPageContent());
+				style.setBigContentTitle(pageNotify.getPageTitle());
+				style.setSummaryText("");
+				NotificationCompat.Builder notificationPage = new NotificationCompat.Builder(
+						context);
+				notificationPage.setStyle(style);
+				notificationPages.add(notificationPage.build());
+			}
+		}
+		return notificationPages;
+	}
+ ```
+__Customizing in your existing Android application__ If you want to customize your own sample for App42 Push Notification in Android Wearable you can use sample code as well as make these change in you Android Manifest.xml file.
+ ```
+ //Add permissions
+ <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--
+     Creates a custom permission so only this app can receive its messages.
+     NOTE: the permission *must* be called PACKAGE.permission.C2D_MESSAGE,
+           where PACKAGE is the application's package name.
+    -->
+    <permission
+        android:name="<Your application package>.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    
+    //Add App42GCMReceiver
+    <receiver
+            android:name="com.app42.wear.notification.App42GCMReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <!-- Receives the registration id. -->
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <!-- Your package name here -->
+                <category android:name="Your application package name" />
+            </intent-filter>
+        </receiver>
+    
+    //Add App42GCMService
+      <service android:name="com.app42.wear.notification.App42GCMService" >
+        </service>
+ 
+  ```
