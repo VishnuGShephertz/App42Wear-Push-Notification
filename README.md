@@ -1,20 +1,20 @@
 App42Wear-Push-Notification
 ===========================
 
-This sample project explain how can we [App42 PushNotification API](http://api.shephertz.com/app42-docs/push-notification-service/) in different ways to send PushNotification to device as well as sink them with Android Wearables.
+This sample project explain how can we [App42 Push Notification API](http://api.shephertz.com/app42-docs/push-notification-service/) in different ways to send Push Notification to device as well as sink them with Android Wearables.
 Please go through with [Android Wear Getting Started] (http://blogs.shephertz.com/2014/07/24/android-wear-getting-started/) if you are new to Android Wear.
 
-Here you can learn how to configure different type of PushNotification using App42 PushNotification API on device as well as on Android Wearable.</br>
+Here you can learn how to configure different type of Push Notification using App42 Push Notification API on device as well as on Android Wearable.</br>
 
-1. Basic PushNotification</br>
-2. Image based PushNotification</br>
-3. Big Content Based PushNotification</br>
-4. Multiple Page based PushNotifications</br>
+1. Basic Push Notification</br>
+2. Image based Push Notification</br>
+3. Big Content Based Push Notification</br>
+4. Multiple Page based Push Notifications</br>
 
 
 # Running Sample
 
-This is a sample Android app is made by using App42  API. It uses PushNotification API of App42 platform.
+This is a sample Android app is made by using App42  API. It uses Push Notification API of App42 platform.
 Here are the few easy steps to run this sample app.
 
 1. [Register] (https://apphq.shephertz.com/register) with App42 platform.
@@ -37,7 +37,7 @@ B. Add library jar files from libs folder by adding library modules in Android S
 
 ```
 A. Replace api-Key and secret-Key that you have received in step 2 or 3 at line number 39 and 40.
-B. Replace your user-id by which you want to register your application for PushNotification at line number 31.
+B. Replace your user-id by which you want to register your application for Push Notification at line number 31.
 ```
 __GCM Integration__
 
@@ -47,10 +47,10 @@ __GCM Integration__
 12. Keep Accept requests from these server IP addresses as blank and click on Create button.<div style="clear:both"></div>
 13. Go to [AppHQ] (http://apphq.shephertz.com) click on Push Notification and select Android Settings in Settings option.<div style="clear:both"></div>
 14. Select your app and provider as GCM and copy server key that is generated in Google developer console in above step and submit it.<div style="clear:both"></div>
-15. Open CommonUtilities.java file of sample project and make following changes.
+15. Open MainActivity.java file of sample project and make following changes.
 
 ```
-A. Replace your GcmProjectNo by your Google Project No at line no90 
+A. Replace your Google Project No at line no90.
 ```
 16. Build your Android Android application and run it on your device (device version should must be 4.4 or above to support Android Wear Notification and for Android Wear Connection).
 17. For Android Wear Connectivty with device as well as for [Android Wear Getting Started] (http://blogs.shephertz.com/2014/07/24/android-wear-getting-started/) read this blog.
@@ -58,7 +58,7 @@ A. Replace your GcmProjectNo by your Google Project No at line no90
 
 # Design Details:
 
-__Registration for PushNotification__ To register for PushNotification on App42 , you have to use method written in App42GCMService.java file, that register your GCM registration Id on App42.
+__Registration for Push Notification__ To register for Push Notification on App42 , you have to use method written in App42GCMService.java file, that register your GCM registration Id on App42.
  
 ```
 	private void registerWithApp42(String regId) {
@@ -82,7 +82,7 @@ __Registration for PushNotification__ To register for PushNotification on App42 
 	}
 ```
 
-__Send PushNotification to User__ You can also send different type of PushNotification using single API and configure accordingly..
+__Send Push Notification to User__ You can also send different type of Push Notification using single API and configure accordingly..
  
 ```
 	private void sendPushMessage(JSONObject message, String userName) {
@@ -103,46 +103,46 @@ __Send PushNotification to User__ You can also send different type of PushNotifi
 				});
 	}
 ```
-__Congiguring different type of PushNotification before sending to user__ All sample code written in Utils.java file in sample project.
+__Congiguring different type of Push Notification before sending to user__ All sample code written in Utils.java file in sample project.
 
 __1.__ Basic PushNotfication
 ```
 static JSONObject buildBasicJson() throws JSONException {
 		JSONObject pushJson = new JSONObject();
-		pushJson.put(Title, "App42 PushNotification");
+		pushJson.put(Title, "App42 Push Notification");
 		pushJson.put(NotifyCode, PushCode.Basic.getCode());
 		pushJson.put(
 				Message,
-				"Hey I am using App42 PushNotification API for Android as well as for Wearable Notification.");
+				"Hey I am using App42 Push Notification API for Android as well as for Wearable Notification.");
 		return pushJson;
 	}
 
 ```
-__2.__ Image based PushNotification (image should reside in assets folder of sample)
+__2.__ Image based Push Notification (image should reside in assets folder of sample)
 ```
 static JSONObject buildImageJson() throws JSONException {
 		JSONObject pushJson = new JSONObject();
-		pushJson.put(Title, "App42 PushNotification");
+		pushJson.put(Title, "App42 Push Notification");
 		pushJson.put(NotifyCode, PushCode.Image.getCode());
 		pushJson.put(
 				Message,
-				"Hey I am using App42 PushNotification API for Android as well as for Wearable Notification.");
+				"Hey I am using App42 Push Notification API for Android as well as for Wearable Notification.");
 		pushJson.put(Image, DefImage);
 		return pushJson;
 	}
 ```
-__3.__ Big Text based PushNotification
+__3.__ Big Text based Push Notification
 ```
 static JSONObject buildBigTextJson() throws JSONException {
 		JSONObject pushJson = new JSONObject();
-		pushJson.put(Title, "App42 PushNotification");
-		pushJson.put(Message, "App42 PushNotification API");
+		pushJson.put(Title, "App42 Push Notification");
+		pushJson.put(Message, "App42 Push Notification API");
 		pushJson.put(BigText, BigTextContent);
 		pushJson.put(NotifyCode, PushCode.BigText.getCode());
 		return pushJson;
 	}
 ```
-__4.__ Multiple Page based PushNotification
+__4.__ Multiple Page based Push Notification
  ```
 	static JSONObject buildMultiPageJson() throws JSONException {
 		JSONObject pushJson = new JSONObject();
@@ -170,11 +170,11 @@ __4.__ Multiple Page based PushNotification
 				"App42 Complete cloud API for differnet applications.");
 		app42.put(
 				PageContent,
-				"App42 Provides complete cloud API for application development in different SDKs e.g \n PushNotification \n LeaderBoard \n SocialService \n File Storage \n Custom Code");
+				"App42 Provides complete cloud API for application development in different SDKs e.g \n Push Notification \n LeaderBoard \n SocialService \n File Storage \n Custom Code");
 		return app42;
 	}
  ```
-  __Parsing PushNotification message when receive on Device side__ When the PushNotification message that we sent in above step is received on Android device side we have to parse the notification message accordingly and generate Notfication UI accordingly that is explain in next step.This code is written in Utils.java file of sample project.
+  __Parsing Push Notification message when receive on Device side__ When the Push Notification message that we sent in above step is received on Android device side we have to parse the notification message accordingly and generate Notfication UI accordingly that is explain in next step.This code is written in Utils.java file of sample project.
    ```
    static App42Push getApp42Push(String message) {
 		App42Push app42Push = null;
@@ -185,7 +185,7 @@ __4.__ Multiple Page based PushNotification
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			app42Push = new App42Push(message, "App42 PushNotification",
+			app42Push = new App42Push(message, "App42 Push Notification",
 					PushCode.Basic);
 		}
 		return app42Push;
