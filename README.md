@@ -1,15 +1,15 @@
 App42Wear-Push-Notification
 ===========================
 
-This sample project explain how can we [App42 PushNotification API](http://api.shephertz.com/app42-docs/push-notification-service/) in different ways to send Push Notification to device as well as sink them with Android Wearables.
+This sample project explain how can we [App42 PushNotification API](http://api.shephertz.com/app42-docs/push-notification-service/) in different ways to send PushNotification to device as well as sink them with Android Wearables.
 Please go through with [Android Wear Getting Started] (http://blogs.shephertz.com/2014/07/24/android-wear-getting-started/) if you are new to Android Wear.
 
 Here you can learn how to configure different type of PushNotification using App42 PushNotification API on device as well as on Android Wearable.</br>
 
-1. Basic Push Notification</br>
-2. Image based Push Notification</br>
-3. Big Content Based Push Notification</br>
-4. Multiple Page based Push Notifications</br>
+1. Basic PushNotification</br>
+2. Image based PushNotification</br>
+3. Big Content Based PushNotification</br>
+4. Multiple Page based PushNotifications</br>
 
 
 # Running Sample
@@ -58,7 +58,7 @@ A. Replace your GcmProjectNo by your Google Project No at line no90
 
 # Design Details:
 
-__Registration for PushNotification__ To register for Push Notification on App42 , you have to use method written in App42GCMService.java file, that register your GCM registration Id on App42.
+__Registration for PushNotification__ To register for PushNotification on App42 , you have to use method written in App42GCMService.java file, that register your GCM registration Id on App42.
  
 ```
 	private void registerWithApp42(String regId) {
@@ -82,7 +82,7 @@ __Registration for PushNotification__ To register for Push Notification on App42
 	}
 ```
 
-__Send Push Notification to User__ You can also send different type of Push Notification using single API and configure accordingly..
+__Send PushNotification to User__ You can also send different type of PushNotification using single API and configure accordingly..
  
 ```
 	private void sendPushMessage(JSONObject message, String userName) {
@@ -103,9 +103,9 @@ __Send Push Notification to User__ You can also send different type of Push Noti
 				});
 	}
 ```
-__ Congiguring different type of PushNotification before sending to user __ All sample code written in Utils.java file in sample project.
+__Congiguring different type of PushNotification before sending to user__ All sample code written in Utils.java file in sample project.
 
-1. Basic Push Notfication
+__1.__ Basic PushNotfication
 ```
 static JSONObject buildBasicJson() throws JSONException {
 		JSONObject pushJson = new JSONObject();
@@ -118,7 +118,7 @@ static JSONObject buildBasicJson() throws JSONException {
 	}
 
 ```
-2. Image based Push Notification (image should reside in assets folder of sample)
+__2.__ Image based PushNotification (image should reside in assets folder of sample)
 ```
 static JSONObject buildImageJson() throws JSONException {
 		JSONObject pushJson = new JSONObject();
@@ -131,7 +131,18 @@ static JSONObject buildImageJson() throws JSONException {
 		return pushJson;
 	}
 ```
-3. Multiple Page based PushNotification
+__3.__ Big Text based PushNotification
+```
+static JSONObject buildBigTextJson() throws JSONException {
+		JSONObject pushJson = new JSONObject();
+		pushJson.put(Title, "App42 PushNotification");
+		pushJson.put(Message, "App42 PushNotification API");
+		pushJson.put(BigText, BigTextContent);
+		pushJson.put(NotifyCode, PushCode.BigText.getCode());
+		return pushJson;
+	}
+```
+__4.__ Multiple Page based PushNotification
  ```
 	static JSONObject buildMultiPageJson() throws JSONException {
 		JSONObject pushJson = new JSONObject();
@@ -163,7 +174,7 @@ static JSONObject buildImageJson() throws JSONException {
 		return app42;
 	}
  ```
-  __ Parsing Push Notification message when receive on Device side__ When the Push Notification message that we sent in above step is received on Android device side we have to parse the notification message accordingly and generate Notfication UI accordingly that is explain in next step.This code is written in Utils.java file of sample project.
+  __ Parsing PushNotification message when receive on Device side__ When the PushNotification message that we sent in above step is received on Android device side we have to parse the notification message accordingly and generate Notfication UI accordingly that is explain in next step.This code is written in Utils.java file of sample project.
    ```
    static App42Push getApp42Push(String message) {
 		App42Push app42Push = null;
@@ -206,9 +217,9 @@ static JSONObject buildImageJson() throws JSONException {
 	}
 	
     ```
- __ Building Notification UI for Android Wear and device__ After prasing the message in above step we have to build Notification UI accordingly the type of message sent using App42 API. All sample code for Notification UI generation in written in NotificationBuilder.java file.
+ __Building Notification UI for Android Wear and device__ After prasing the message in above step we have to build Notification UI accordingly the type of message sent using App42 API. All sample code for Notification UI generation in written in NotificationBuilder.java file.
  
- 1. Builiding Common Wearable Notification UI
+ __1.__ Builiding Common Wearable Notification UI
   
  ```
   private static WearableNotifications.Builder getWearableNotification(
@@ -222,7 +233,7 @@ static JSONObject buildImageJson() throws JSONException {
 		return wearableBuilder;
 	}
  ```
-  2. Adding Action on Notification Click
+  __2.__ Adding Action on Notification Click
   
  ```
  private static NotificationCompat.Action getAction(Context context) {
@@ -234,7 +245,7 @@ static JSONObject buildImageJson() throws JSONException {
 				"Open on Phone", pendingIntent).build();
 	}
  ```
- 3. Building basic Notification UI
+ __3.__ Building basic Notification UI
  
  ```
  private static Notification getBasicNotification(Context context,
@@ -245,7 +256,7 @@ static JSONObject buildImageJson() throws JSONException {
 		return builder.build();
 	}
  ```
- 4. Building Image based Notification UI
+ __4.__ Building Image based Notification UI
  
  ```
  private static Notification buildImageNotification(Context context,
@@ -268,7 +279,7 @@ static JSONObject buildImageJson() throws JSONException {
 		return builder.build();
 	}
  ```
- 5. Building Big Text based Notification UI
+ __5.__ Building Big Text based Notification UI
  
  ```
  private static Notification buildBigNotification(Context context,
@@ -286,7 +297,7 @@ static JSONObject buildImageJson() throws JSONException {
 	}
 
  ```
- 6. Building Multiple Page Notification UI
+ __6.__ Building Multiple Page Notification UI
  
  ```
  private static Notification buildMultiPageNotification(Context context,
