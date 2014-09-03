@@ -17,44 +17,42 @@ Here you can learn how to configure different type of Push Notification using Ap
 This is a sample Android app is made by using App42  API. It uses Push Notification API of App42 platform.
 Here are the few easy steps to run this sample app.
 
-1. [Register] (https://apphq.shephertz.com/register) with App42 platform.
-2. Create an app once, you are on Quick start page after registration.
-3. If you are already registered, login to [AppHQ] (http://apphq.shephertz.com) console and create an app from App Manager Tab.
-4. Download the project from [here] (https://github.com/VishnuGShephertz/App42Wear-Push-Notification/archive/master.zip) and unzip it.
-5. Configure with Eclipse that have latest ADT (Android Developer Tool).
+1. [Register\Login] (https://apphq.shephertz.com/register) with App42 platform and create an app from App Manager Tab. 
+2. [Download project] (https://github.com/VishnuGShephertz/App42Wear-Push-Notification/archive/master.zip) and unzip it.
+3. Configure with Eclipse that have latest ADT (Android Developer Tool).
 ```
 A. Import this project in Eclipse.
 B. Check Android Dependencies and Android Private libraries in order and import section on Build Path.
 ```
 
-7. Configure with Android Studio.
+4. Configure with Android Studio.
 ```
 A. Import this project in your Android Studio.
 B. Add library jar files from libs folder by adding library modules in Android Studio.
 ```
 
-8. Make these changes in MainActivity.java file of sample.
+5. Make these changes in MainActivity.java file of sample.
 
 ```
-A. Replace api-Key and secret-Key that you have received in step 2 or 3 at line number 39 and 40.
+A. Replace API-Key and Secret-Key that you have received in step 2 or 3 at line number 39 and 40.
 B. Replace your user-id by which you want to register your application for Push Notification at line number 31.
 ```
 __GCM Integration__
 
-9. Create a project and get your Project Number from [google developer console](https://cloud.google.com/console/project). It would be available in Overview section of your created project.<div style="clear:both"></div>
-10. Select your created project and click on APIs option in Google developer console and enable Google Cloud Messaging for Android service.<div style="clear:both"></div>
-11. Click on Credentials(in APIs option) from left menu -> Create New Key -> Server Key.<div style="clear:both"></div>
-12. Keep Accept requests from these server IP addresses as blank and click on Create button.<div style="clear:both"></div>
-13. Go to [AppHQ] (http://apphq.shephertz.com) click on Push Notification and select Android Settings in Settings option.<div style="clear:both"></div>
-14. Select your app and provider as GCM and copy server key that is generated in Google developer console in above step and submit it.<div style="clear:both"></div>
-15. Open MainActivity.java file of sample project and make following changes.
+6. Create a project and get your Project Number from [google developer console](https://cloud.google.com/console/project). It would be available in Overview section of your created project.<div style="clear:both"></div>
+7. Select your created project and click on APIs option in Google developer console and enable Google Cloud Messaging for Android service.<div style="clear:both"></div>
+8. Click on Credentials(in APIs option) from left menu -> Create New Key -> Server Key.<div style="clear:both"></div>
+9. Keep Accept requests from these server IP addresses as blank and click on Create button.<div style="clear:both"></div>
+10. Go to [AppHQ] (http://apphq.shephertz.com) click on Push Notification and select Android Settings in Settings option.<div style="clear:both"></div>
+11. Select your app and provider as GCM and copy server key that is generated in Google developer console in above step and submit it.<div style="clear:both"></div>
+12. Open MainActivity.java file of sample project and make following changes.
 
 ```
-A. Replace your Google Project No at line no90.
+A. Put your Google Project No at line no90.
 ```
-16. Build your Android Android application and run it on your device (device version should must be 4.4 or above to support Android Wear Notification and for Android Wear Connection).
-17. For Android Wear Connectivty with device as well as for [Android Wear Getting Started] (http://blogs.shephertz.com/2014/07/24/android-wear-getting-started/) read this blog.
-18. You can also open these Notifications from Android Wear to phone when you click *Open on Phone* option on Android Wear.
+13. Build your Android Android application and run it on your device (device version should must be 4.4 or above to support Android Wear Notification and for Android Wear Connection).
+14. For Android Wear Connectivity with device go through with [Android Wear Getting Started] (http://blogs.shephertz.com/2014/07/24/android-wear-getting-started/).
+15. You can also open these Notifications from Android Wear to phone when you click *Open on Phone* option on Android Wear.
 
 # Design Details:
 
@@ -222,12 +220,12 @@ __Building Notification UI for Android Wear and device__ After prasing the messa
 __1.__ Builiding Common Wearable Notification UI
   
  ```
-  private static WearableNotifications.Builder getWearableNotification(
+ private  WearableNotifications.Builder buildWearableNotification(
 			Context context, App42Push app42Push) {
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(
 				context).setContentText(app42Push.getMessage())
 				.setContentTitle(app42Push.getTitle())
-				.setSmallIcon(R.drawable.ic_launcher);
+				.setSmallIcon(R.drawable.logo);
 		WearableNotifications.Builder wearableBuilder = new WearableNotifications.Builder(
 				builder);
 		return wearableBuilder;
@@ -236,7 +234,7 @@ __1.__ Builiding Common Wearable Notification UI
 __2.__ Adding Action on Notification Click
   
  ```
- private static NotificationCompat.Action getAction(Context context) {
+ private  NotificationCompat.Action getAction(Context context) {
 		Intent intent = new Intent(context, MainActivity.class);
 		intent.putExtra(App42GCMService.EXTRA_MESSAGE, currentMsg);
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
@@ -248,9 +246,9 @@ __2.__ Adding Action on Notification Click
 __3.__ Building basic Notification UI
  
  ```
- private static Notification getBasicNotification(Context context,
+ private  Notification buildBasicNotification(Context context,
 			App42Push app42Push) {
-		WearableNotifications.Builder builder = getWearableNotification(context,
+		WearableNotifications.Builder builder = buildWearableNotification(context,
 				app42Push);
 		builder.getCompatBuilder().addAction(getAction(context));
 		return builder.build();
@@ -259,19 +257,19 @@ __3.__ Building basic Notification UI
 __4.__ Building Image based Notification UI
  
  ```
- private static Notification buildImageNotification(Context context,
+ private  Notification buildImageNotification(Context context,
 			App42Push app42Push) {
 		NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
 		Bitmap imageBitmap =null;
 		if (app42Push.getImage() != null) {
 			imageBitmap = Bitmap.createScaledBitmap(
 					Utils.loadBitmapAsset(context, app42Push.getImage()),
-					NOTIFICATION_IMAGE_WIDTH, NOTIFICATION_IMAGE_HEIGHT, false);
+					ImageWidth, Imageheight, false);
 		}
 		style.bigPicture(imageBitmap);
 		style.setBigContentTitle(app42Push.getTitle());
 		style.setSummaryText("");
-		WearableNotifications.Builder builder = getWearableNotification(context,
+		WearableNotifications.Builder builder = buildWearableNotification(context,
 				app42Push);
 		builder.getCompatBuilder().addAction(getAction(context));
 		builder.getCompatBuilder().setStyle(style);
@@ -282,25 +280,24 @@ __4.__ Building Image based Notification UI
 __5.__ Building Big Text based Notification UI
  
  ```
- private static Notification buildBigNotification(Context context,
+private  Notification buildBigNotification(Context context,
 			App42Push app42Push) {
 		NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
 		style.bigText(app42Push.getbigText());
 		style.setBigContentTitle(app42Push.getTitle());
 		style.setSummaryText("");
-		WearableNotifications.Builder builder = getWearableNotification(context,
+		WearableNotifications.Builder builder = buildWearableNotification(context,
 				app42Push);
 		builder.getCompatBuilder().addAction(getAction(context));
 		builder.getCompatBuilder().setStyle(style);
 		builder.getCompatBuilder().setContentText(app42Push.getbigText());
 		return builder.build();
 	}
-
  ```
 __6.__ Building Multiple Page Notification UI
  
  ```
- private static Notification buildMultiPageNotification(Context context,
+ private  Notification buildMultiPageNotification(Context context,
 			App42Push app42Push) {
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(
 				context);
@@ -309,19 +306,18 @@ __6.__ Building Multiple Page Notification UI
 		if (app42Push.getImage() != null) {
 			Bitmap imageBitmap = Bitmap.createScaledBitmap(
 					Utils.loadBitmapAsset(context, app42Push.getImage()),
-					NOTIFICATION_IMAGE_WIDTH, NOTIFICATION_IMAGE_HEIGHT, false);
+					ImageWidth, Imageheight, false);
 			builder.setLargeIcon(imageBitmap);
 		}
 		builder.setContentTitle(app42Push.getTitle());
 		builder.setContentText(app42Push.getMessage());
-		builder.setSmallIcon(R.drawable.ic_launcher);
-
+		builder.setSmallIcon(R.drawable.logo);
 		Notification notification = builder.extend(
 				new NotificationCompat.WearableExtender()
 						.addPages(notificationPages)).build();
 		return notification;
 	}
-	private static ArrayList<Notification> buildNotificationPages(
+	private  ArrayList<Notification> buildNotificationPages(
 			ArrayList<PageNotification> pageNotifications, Context context) {
 		ArrayList<Notification> notificationPages = new ArrayList<Notification>();
 		if (pageNotifications != null) {
@@ -335,6 +331,7 @@ __6.__ Building Multiple Page Notification UI
 				NotificationCompat.Builder notificationPage = new NotificationCompat.Builder(
 						context);
 				notificationPage.setStyle(style);
+				notificationPage.setSmallIcon(R.drawable.logo);
 				notificationPages.add(notificationPage.build());
 			}
 		}
