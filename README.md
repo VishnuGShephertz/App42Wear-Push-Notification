@@ -4,11 +4,12 @@ App42Wear-Push-Notification
 This sample project explain how can we App42 PushNotification API in different ways to send Push Notification to device as well as sink them 
 with Android Wearables.
 >Please go through with [Android Wear Getting Started] (http://blogs.shephertz.com/2014/07/24/android-wear-getting-started/)if you are new to Android Wear.
-Here you can learn how to configure different type of PushNotification using App42 PushNotification API on device as well as on Android Wearable.
-1. Basic Push Notification
-2. Image based Push Notification
-3. Big Content Based Push Notification
-4. Multiple Page based Push Notifications
+
+Here you can learn how to configure different type of PushNotification using App42 PushNotification API on device as well as on Android Wearable.</br>
+1. Basic Push Notification</br>
+2. Image based Push Notification</br>
+3. Big Content Based Push Notification</br>
+4. Multiple Page based Push Notifications</br>
 
 
 # Running Sample
@@ -34,10 +35,9 @@ B. Add library jar files from libs folder by adding library modules in Android S
 
 ```
 A. Replace api-Key and secret-Key that you have received in step 2 or 3 at line number 39 and 40.
-B. Replace your user-id by which you want to register your application for PushNotification at line number 36.
+B. Replace your user-id by which you want to register your application for PushNotification at line number 31.
 ```
 
-<b>GCM based Push Integration :</b><div style="clear:both"></div>
 6. Create a project and get your Project Number from [google developer console](https://cloud.google.com/console/project). It would be available in Overview section of your created project.<div style="clear:both"></div>
 7. Select your created project and click on APIs option in Google developer console and enable Google Cloud Messaging for Android service.<div style="clear:both"></div>
 8. Click on Credentials(in APIs option) from left menu -> Create New Key -> Server Key.<div style="clear:both"></div>
@@ -47,5 +47,5 @@ B. Replace your user-id by which you want to register your application for PushN
 12. Open CommonUtilities.java file of sample project and make following changes.
 
 ```
-A. Replace your GcmProjectNo by your Google Project No.
+A. Replace your GcmProjectNo by your Google Project No at line no90 
 ```
