@@ -174,7 +174,7 @@ __4.__ Multiple Page based PushNotification
 		return app42;
 	}
  ```
-  __ Parsing PushNotification message when receive on Device side__ When the PushNotification message that we sent in above step is received on Android device side we have to parse the notification message accordingly and generate Notfication UI accordingly that is explain in next step.This code is written in Utils.java file of sample project.
+  __Parsing PushNotification message when receive on Device side__ When the PushNotification message that we sent in above step is received on Android device side we have to parse the notification message accordingly and generate Notfication UI accordingly that is explain in next step.This code is written in Utils.java file of sample project.
    ```
    static App42Push getApp42Push(String message) {
 		App42Push app42Push = null;
@@ -216,10 +216,10 @@ __4.__ Multiple Page based PushNotification
 		return app42Push;
 	}
 	
-    ```
- __Building Notification UI for Android Wear and device__ After prasing the message in above step we have to build Notification UI accordingly the type of message sent using App42 API. All sample code for Notification UI generation in written in NotificationBuilder.java file.
+  ```
+__Building Notification UI for Android Wear and device__ After prasing the message in above step we have to build Notification UI accordingly the type of message sent using App42 API. All sample code for Notification UI generation in written in NotificationBuilder.java file.
  
- __1.__ Builiding Common Wearable Notification UI
+__1.__Builiding Common Wearable Notification UI
   
  ```
   private static WearableNotifications.Builder getWearableNotification(
@@ -233,7 +233,7 @@ __4.__ Multiple Page based PushNotification
 		return wearableBuilder;
 	}
  ```
-  __2.__ Adding Action on Notification Click
+__2.__ Adding Action on Notification Click
   
  ```
  private static NotificationCompat.Action getAction(Context context) {
@@ -245,7 +245,7 @@ __4.__ Multiple Page based PushNotification
 				"Open on Phone", pendingIntent).build();
 	}
  ```
- __3.__ Building basic Notification UI
+__3.__ Building basic Notification UI
  
  ```
  private static Notification getBasicNotification(Context context,
@@ -256,7 +256,7 @@ __4.__ Multiple Page based PushNotification
 		return builder.build();
 	}
  ```
- __4.__ Building Image based Notification UI
+__4.__ Building Image based Notification UI
  
  ```
  private static Notification buildImageNotification(Context context,
@@ -279,7 +279,7 @@ __4.__ Multiple Page based PushNotification
 		return builder.build();
 	}
  ```
- __5.__ Building Big Text based Notification UI
+__5.__ Building Big Text based Notification UI
  
  ```
  private static Notification buildBigNotification(Context context,
@@ -297,7 +297,7 @@ __4.__ Multiple Page based PushNotification
 	}
 
  ```
- __6.__ Building Multiple Page Notification UI
+__6.__ Building Multiple Page Notification UI
  
  ```
  private static Notification buildMultiPageNotification(Context context,
