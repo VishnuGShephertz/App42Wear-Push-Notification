@@ -12,7 +12,8 @@
         android:layout_centerInParent="true"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
-        android:text="App42 Message" />
+        android:text="App42 Message"
+        android:maxLines="6" />
     
  <Button
         android:id="@+id/registerPush"

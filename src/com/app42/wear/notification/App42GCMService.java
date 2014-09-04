@@ -33,7 +33,6 @@ public class App42GCMService extends GCMBaseIntentService {
 		Log.i(TAG, "onError " + msg);
 
 	}
-
 	@Override
 	protected void onMessage(Context context, Intent intent) {
 		Log.i(TAG, "Received message "
@@ -41,7 +40,7 @@ public class App42GCMService extends GCMBaseIntentService {
 		String message = intent.getExtras().getString("message");
 		App42Push app42Push=Utils.getApp42Push(message);
 		displayMessage(context, message);
-		Notification notification=NotificationBuilder.generateNotification(context,app42Push, message);
+		Notification notification=new NotificationBuilder().generateNotification(context,app42Push, message);
 				 NotificationManagerCompat notificationManagerCompat =
 				 NotificationManagerCompat.from(this);
 				 notificationManagerCompat.notify(001, notification);
@@ -71,10 +70,8 @@ public class App42GCMService extends GCMBaseIntentService {
 						App42Log.debug(" ..... Registeration Failed ....");
 						App42Log.debug("storeDeviceToken :  Exception : on start up "
 								+ paramException);
-
 					}
 				});
-
 	}
 
 	@Override

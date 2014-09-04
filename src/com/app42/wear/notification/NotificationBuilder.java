@@ -18,30 +18,30 @@ import com.example.app42pushnotification.R;
  * 
  */
 public class NotificationBuilder {
-	private static String currentMsg = "";
-	public static final int NOTIFICATION_IMAGE_WIDTH = 280;
-	public static final int NOTIFICATION_IMAGE_HEIGHT = 280;
+	private  String currentMsg = "";
+	public  final int ImageWidth = 280;
+	public  final int Imageheight = 280;
 
-	private static WearableNotifications.Builder getNotification(
+	private  WearableNotifications.Builder buildWearableNotification(
 			Context context, App42Push app42Push) {
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(
 				context).setContentText(app42Push.getMessage())
 				.setContentTitle(app42Push.getTitle())
-				.setSmallIcon(R.drawable.ic_launcher);
+				.setSmallIcon(R.drawable.logo);
 		WearableNotifications.Builder wearableBuilder = new WearableNotifications.Builder(
 				builder);
 		return wearableBuilder;
 	}
 
-	private static Notification getBasicNotification(Context context,
+	private  Notification buildBasicNotification(Context context,
 			App42Push app42Push) {
-		WearableNotifications.Builder builder = getNotification(context,
+		WearableNotifications.Builder builder = buildWearableNotification(context,
 				app42Push);
 		builder.getCompatBuilder().addAction(getAction(context));
 		return builder.build();
 	}
 
-	private static NotificationCompat.Action getAction(Context context) {
+	private  NotificationCompat.Action getAction(Context context) {
 		Intent intent = new Intent(context, MainActivity.class);
 		intent.putExtra(App42GCMService.EXTRA_MESSAGE, currentMsg);
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
@@ -50,20 +50,19 @@ public class NotificationBuilder {
 				"Open on Phone", pendingIntent).build();
 	}
 
-	private static Notification buildImageNotification(Context context,
+	private  Notification buildImageNotification(Context context,
 			App42Push app42Push) {
-
 		NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
 		Bitmap imageBitmap =null;
 		if (app42Push.getImage() != null) {
 			imageBitmap = Bitmap.createScaledBitmap(
 					Utils.loadBitmapAsset(context, app42Push.getImage()),
-					NOTIFICATION_IMAGE_WIDTH, NOTIFICATION_IMAGE_HEIGHT, false);
+					ImageWidth, Imageheight, false);
 		}
 		style.bigPicture(imageBitmap);
 		style.setBigContentTitle(app42Push.getTitle());
 		style.setSummaryText("");
-		WearableNotifications.Builder builder = getNotification(context,
+		WearableNotifications.Builder builder = buildWearableNotification(context,
 				app42Push);
 		builder.getCompatBuilder().addAction(getAction(context));
 		builder.getCompatBuilder().setStyle(style);
@@ -71,13 +70,13 @@ public class NotificationBuilder {
 		return builder.build();
 	}
 
-	private static Notification buildBigNotification(Context context,
+	private  Notification buildBigNotification(Context context,
 			App42Push app42Push) {
 		NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
 		style.bigText(app42Push.getbigText());
 		style.setBigContentTitle(app42Push.getTitle());
 		style.setSummaryText("");
-		WearableNotifications.Builder builder = getNotification(context,
+		WearableNotifications.Builder builder = buildWearableNotification(context,
 				app42Push);
 		builder.getCompatBuilder().addAction(getAction(context));
 		builder.getCompatBuilder().setStyle(style);
@@ -85,7 +84,30 @@ public class NotificationBuilder {
 		return builder.build();
 	}
 
-	private static ArrayList<Notification> buildNotificationPages(
+	
+
+	private  Notification buildMultiPageNotification(Context context,
+			App42Push app42Push) {
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				context);
+		ArrayList<Notification> notificationPages = buildNotificationPages(
+				app42Push.getPageNotifications(), context);
+		if (app42Push.getImage() != null) {
+			Bitmap imageBitmap = Bitmap.createScaledBitmap(
+					Utils.loadBitmapAsset(context, app42Push.getImage()),
+					ImageWidth, Imageheight, false);
+			builder.setLargeIcon(imageBitmap);
+		}
+		builder.setContentTitle(app42Push.getTitle());
+		builder.setContentText(app42Push.getMessage());
+		builder.setSmallIcon(R.drawable.logo);
+		builder.addAction(getAction(context));
+		Notification notification = builder.extend(
+				new NotificationCompat.WearableExtender()
+						.addPages(notificationPages)).build();
+		return notification;
+	}
+	private  ArrayList<Notification> buildNotificationPages(
 			ArrayList<PageNotification> pageNotifications, Context context) {
 		ArrayList<Notification> notificationPages = new ArrayList<Notification>();
 		if (pageNotifications != null) {
@@ -99,39 +121,17 @@ public class NotificationBuilder {
 				NotificationCompat.Builder notificationPage = new NotificationCompat.Builder(
 						context);
 				notificationPage.setStyle(style);
+				notificationPage.setSmallIcon(R.drawable.logo);
 				notificationPages.add(notificationPage.build());
 			}
 		}
 		return notificationPages;
 	}
-
-	private static Notification buildMultiPageNotification(Context context,
-			App42Push app42Push) {
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(
-				context);
-		ArrayList<Notification> notificationPages = buildNotificationPages(
-				app42Push.getPageNotifications(), context);
-		if (app42Push.getImage() != null) {
-			Bitmap imageBitmap = Bitmap.createScaledBitmap(
-					Utils.loadBitmapAsset(context, app42Push.getImage()),
-					NOTIFICATION_IMAGE_WIDTH, NOTIFICATION_IMAGE_HEIGHT, false);
-			builder.setLargeIcon(imageBitmap);
-		}
-		builder.setContentTitle(app42Push.getTitle());
-		builder.setContentText(app42Push.getMessage());
-		builder.setSmallIcon(R.drawable.ic_launcher);
-
-		Notification notification = builder.extend(
-				new NotificationCompat.WearableExtender()
-						.addPages(notificationPages)).build();
-		return notification;
-	}
-
-	static Notification generateNotification(Context context,
+	 Notification generateNotification(Context context,
 			App42Push app42Push, String message) {
 		currentMsg = message;
 		if (app42Push.getCode() == PushCode.Basic) {
-			return getBasicNotification(context, app42Push);
+			return buildBasicNotification(context, app42Push);
 		} else if (app42Push.getCode() == PushCode.BigText) {
 			return buildBigNotification(context, app42Push);
 		} else if (app42Push.getCode() == PushCode.Image) {

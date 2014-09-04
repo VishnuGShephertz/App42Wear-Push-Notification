@@ -14,7 +14,12 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.app42.wear.notification.App42Push.PageNotification;
-
+/**
+ * 
+ * @author Vishnu Garg
+ * @Shephertz
+ * 
+ */
 public class Utils {
 	private static final String Title = "title";
 	private static final String Message = "message";
@@ -30,7 +35,7 @@ public class Utils {
 	private static final String DefTitle = "App42 PushNotification";
 	private static final String DefImage = "shephertz.png";
 
-	private static final String BigTextContent = "storeDeviceToken  \n sendPushMessageToUser \n sendPushMessageToAll \n createChannelForApp \n subscribeToChannel \n sendPushMessageToChannel";
+	private static final String BigTextContent = "storeDeviceToken  ";
 
 	static JSONObject buildBasicJson() throws JSONException {
 		JSONObject pushJson = new JSONObject();

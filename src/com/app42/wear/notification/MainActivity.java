@@ -28,6 +28,7 @@ import com.shephertz.app42.paas.sdk.android.App42Log;
 public class MainActivity extends Activity {
 
 	private TextView messageText;
+	private final String myUserId="vishnu12";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,65 +48,45 @@ public class MainActivity extends Activity {
 	public void sendMultiPagePush(View view) {
 		try {
 			messageText.setText("Sending Multi page Push.....");
-			sendPushMessage(Utils.buildMultiPageJson(), "vishnu12");
+			sendPushMessage(Utils.buildMultiPageJson(), myUserId);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// // Notification
-		// notification=NotificationBuilder.getMultiPageNotification(this);
-		// NotificationManagerCompat notificationManagerCompat =
-		// NotificationManagerCompat.from(this);
-		// notificationManagerCompat.notify(001, notification);
 	}
 
 	public void sendBigTextPush(View view) {
 		try {
 			messageText.setText("Sending Big Push.....");
-			sendPushMessage(Utils.buildBigTextJson(), "vishnu12");
+			sendPushMessage(Utils.buildBigTextJson(), myUserId);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// Notification
-		// notification=null;//NotificationBuilder.getBigNotification(this);
-		// NotificationManagerCompat notificationManagerCompat =
-		// NotificationManagerCompat.from(this);
-		// notificationManagerCompat.notify(001, notification);
 	}
 
 	public void sendImagePush(View view) {
 		try {messageText.setText("Sending Image Push.....");
-			sendPushMessage(Utils.buildImageJson(), "vishnu12");
+			sendPushMessage(Utils.buildImageJson(), myUserId);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// Notification
-		// notification=NotificationBuilder.getImageNotification(this);
-		// NotificationManagerCompat notificationManagerCompat =
-		// NotificationManagerCompat.from(this);
-		// notificationManagerCompat.notify(001, notification);
 	}
 
 	public void sendBasicPush(View view) {
 		try {
 			messageText.setText("Sending basic Push.....");
-			sendPushMessage(Utils.buildBasicJson(), "vishnu12");
+			sendPushMessage(Utils.buildBasicJson(), myUserId);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// Notification
-		// notification=NotificationBuilder.getBasicNotification(this);
-		// NotificationManagerCompat notificationManagerCompat =
-		// NotificationManagerCompat.from(this);
-		// notificationManagerCompat.notify(001, notification);
 	}
 
 	public void registerForPush(View view) {
 		messageText.setText("Registering for Push.....");
-		App42API.setLoggedInUser("vishnu12");
+		App42API.setLoggedInUser(myUserId);
 		registerWithApp42("1043599038916");
 	}
 

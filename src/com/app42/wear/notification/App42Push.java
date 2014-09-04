@@ -1,7 +1,12 @@
 package com.app42.wear.notification;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author Vishnu Garg
+ * @Shephertz
+ * 
+ */
 public class App42Push {
 
 	public PushCode getCode() {
